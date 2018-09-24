@@ -1,5 +1,8 @@
+<!-- TOC -->
+
 - [Ransomware](#ransomware)
 - [Memsome](#memsome)
+- [Get Admin](#get-admin)
 
 <!-- /TOC -->
 # Ransomware
@@ -59,7 +62,6 @@ We have to make our id equals to `1` to become admin, so just register with user
 Now, because we can control the length of plaintext, just set it to the length of `id¡????÷username¡aaaa÷id¡1÷checksum¡XXXXXXXXX`,so we can overwrite the `id`,thus, the checksum is `crc32(id¡1÷username¡aaaa)` , the username should be `aaaa÷id¡1÷checksum¡1319112219`.
 
 cookie:
-
 ```
 IC5LGPMj%2Bts5ygEGoQB3vrmYzrMpafvt3vBEMK86SnThpfr6YnjnKM%2B%2BjOKNino3OfRpsUrGLrV7EUYgbh1Vud7rso1Ubv3Z8oQH65gxKJM4tTePlBZ8FFvnNsyZ%2Fhqp000052
 ```
