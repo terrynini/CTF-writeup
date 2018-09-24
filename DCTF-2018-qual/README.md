@@ -48,7 +48,7 @@ Then do base64->md5->md5 to every char of rot13ed-key , every result have to mat
 
 # Get Admin
 
-The format of cookie is
+The format of cookie is
 
 `AES(id¡value÷username¡value÷email¡value÷checksum¡value)` + `length of plaintext`
 
