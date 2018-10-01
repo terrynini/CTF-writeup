@@ -82,7 +82,7 @@ Like :
 
 We have to make our id equals to `1` to become admin, so just register with username  `aaaa÷id¡1÷checksum¡XXXXXXXXX`, then the whole token would become `id¡????÷username¡aaaa÷id¡1÷checksum¡XXXXXXXXX÷email¡value÷checksum¡value`
 
-Now, because we can control the length of plaintext, just set it to the length of `id¡????÷username¡aaaa÷id¡1÷checksum¡XXXXXXXXX`,so we can overwrite the `id`,thus, the checksum is `crc32(id¡1÷username¡aaaa)` , the username should be `aaaa÷id¡1÷checksum¡1319112219`.
+Now, because we can control the length of plaintext, just set it to the length of `id¡????÷username¡aaaa÷id¡1÷checksum¡XXXXXXXXX`, we can overwrite the `id`,thus, the checksum is `crc32(id¡1÷username¡aaaa)` , the username should be `aaaa÷id¡1÷checksum¡1319112219`.
 
 cookie:
 ```
