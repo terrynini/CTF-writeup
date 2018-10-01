@@ -18,7 +18,7 @@ What the binary basically do is :
 1. get input
 2. use input to decode an area `unk_405020` with length `0x4c8e`
 3. do MD5 to that area with length `0x4c8e-0x20`
-4. compare the "printable" hex result of MD5 with the last 0x20 "raw" byte of the area (the part which was not MD5 input)
+4. compare the "printable" hex result of MD5 with the last 0x20 byte (as "string" ) of the area (the part which was not MD5 input)
 5. do the samething with input2, input3, input4 but with length `0x4c6e`,`0x4c4e`,`0x4c2e`
 6. The decode area is actually a `PE` file. Extract it to `C:\HOME\AppData\Local\Temp\oldskull_checker.exe` then execute it to check `FLAG`
 
