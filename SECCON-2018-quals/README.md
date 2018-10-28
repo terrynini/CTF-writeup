@@ -5,6 +5,7 @@
 - [Special Instructions](#special-instructions)
 - [Special Device File](#special-device-file)
 - [block](#block)
+- [shooter](#shooter)
 - [tctkToy](#tctktoy)
 
 <!-- /TOC -->
@@ -101,8 +102,108 @@ The flag is `SECCON{UseTheSpecialDeviceFile}`
 
 Decompress the `.apk`, the `C#` script of game is located at `assets/bin/Data/Managed/Assembly-CSharp.dll`.
 
+There are only two methods ,`Start` and `Update`, obviously, the `Update` keep rotate the flag behind, let's modify them to :
+
+```csharp
+#the axis of object seems not parellel or vertical to camera
+
+public void Start()
+{
+	base.transform.position = new Vector3(0f, -4.5f, 2f);
+	base.transform.Rotate(new Vector3(0f, -90f, 0f));
+}
+
+public void Update()
+{
+}
+```
+
+Pack it back and launch it.
+
 ![flag](./block.png)
 
+The flag is `SECCON{4R3_Y0U_CH34+3R?}`
+
+# shooter
+
+A unity game again.
+
+You play a game, and rank **online** with other players.
+
+But this one was builded by IL2CPP.
+
+How I found it was builded by IL2CPP (it's also my first time to reverse such thing):
+
+First, there is no `Assembly-CSharp.dll`.
+
+It may implies 2 possibility (or more) :
+
+- The `dll` was some how being packed or obfuscated
+- The game was build in a different way
+
+Second, the layout of diretory seems to be different with last challenge, block.
+
+Then I found there are lots of keywords in `assets/bin/Data/Managed/Metadata/global-metadata.dat`
+
+After google it, I could dump the pseudo code from `global-metadata.dat` and `libil2cpp.so` ( main logic ) by [Il2CppDumper](https://github.com/Perfare/Il2CppDumper).
+
+But there is nothing valuable in the game logic......
+
+Observing strings, I found there are some interesting keyword in it
+
+```
+shooter.pwn.seccon.jp
+staging.shooter.pwn.seccon.jp
+develop.shooter.pwn.seccon.jp
+/admin
+/api/v1/score
+```
+
+I can get the highest score by sending:
+
+```
+POST /api/v1/scores HTTP/1.1
+Expect: 100-continue
+X-Unity-Version: 2018.2.11f1
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+User-Agent: Dalvik/2.1.0 (Linux; U; Android 8.1.0; Android SDK built for x86 Build/OSM1.180201.007)
+Host: shooter.pwn.seccon.jp
+Connection: Keep-Alive
+Accept-Encoding: gzip
+
+score=2147483647&name=zzzzzzzzzzzzzzzzzzzzzzzz
+```
+
+It's useless, server won't send flag back.
+
+And I don't think that the command injection would work.
+
+Then, I found that http://staging.shooter.pwn.seccon.jp/admin will redirect you to http://staging.shooter.pwn.seccon.jp/admin/sessions/new
+
+![admin](./admin.png)
+
+SQL injection works....
+
+We can login as admin by sending `' ))) UNION (SElECT 1)#` as password.
+
+What's more, we can do the time base SQL injection.
+
+This part was done by kaibor,my teamate.
+
+1. leak first db : `shooter_staging`
+
+1. leak first table in it : `ar_internal_metadata`
+
+1. leak second table in it : `flags`
+
+1. columns in `flags`:
+   - `id`
+   - `value`
+   - `created_at`
+   - `updated_a t`
+
+The flag is `SECCON{1NV4L1D_4DM1N_P4G3_4U+H3NT1C4T10N}`
 # tctkToy
 
 I overdozed, only left an hour to solve this lol
