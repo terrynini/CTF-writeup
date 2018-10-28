@@ -24,7 +24,7 @@ The flag is `SECCON{Runn1n6_P47h}`
 
 The architecture of the elf is `moxie`, can be known by `strings`.
 
-The binary would prints :
+The binary would print :
 
 ```sh
 This program uses special instructions.
@@ -37,7 +37,7 @@ GETRAND: (Opcode:0x17)
     SEED -> RegA
 ```
 
-Indeed, we can find some weird instruction in binary dump:
+Indeed, we can find some weird instructions in binary dump:
 
 ```
 0000154a <set_random_seed>:
@@ -66,7 +66,7 @@ uint32_t xorshift32(uint32_t state[static 1])
     uint32_t x = state[0];
     x ^= x << 13;
     x ^= x >> 17;
-    x ^= x << 5; //the original version is << 5
+    x ^= x << 15; //the original version is << 5
     state[0] = x;
     return x;
 }
@@ -82,7 +82,7 @@ This binary should be more easy to understand, because all you need to do is dra
 
 The key point is how `/dev/xorshift64` work, there are serveral implementation online, it's time comsuming to test everyone.
 
-But, the SECCON is hold by japanese, where a japanese engineer would go for searching for information about things they don't understand ?
+But, the SECCON is hold by japanese, where a japanese engineer would go for searching the information about things they don't understand ?
 
 Wiki, but in japanese......
 
@@ -126,30 +126,30 @@ The flag is `SECCON{4R3_Y0U_CH34+3R?}`
 
 # shooter
 
-A unity game again.
+Again,a unity game.
 
-You play a game, and rank **online** with other players.
+Basically, it's arcade game, and the players would be ranked **online** with other players.
 
-But this one was builded by IL2CPP.
+This one was builded by IL2CPP.
 
-How I found it was builded by IL2CPP (it's also my first time to reverse such thing):
+How I found that it was builded by IL2CPP (it's also my first time to reverse such thing):
 
 First, there is no `Assembly-CSharp.dll`.
 
-It may implies 2 possibility (or more) :
+It may implies the possibility of 2 things (or more) :
 
 - The `dll` was some how being packed or obfuscated
 - The game was build in a different way
 
 Second, the layout of diretory seems to be different with last challenge, block.
 
-Then I found there are lots of keywords in `assets/bin/Data/Managed/Metadata/global-metadata.dat`
+Then I found that there are lots of keywords in `assets/bin/Data/Managed/Metadata/global-metadata.dat`
 
 After google it, I could dump the pseudo code from `global-metadata.dat` and `libil2cpp.so` ( main logic ) by [Il2CppDumper](https://github.com/Perfare/Il2CppDumper).
 
 But there is nothing valuable in the game logic......
 
-Observing strings, I found there are some interesting keyword in it
+Observing strings, I found there are some weird strings :
 
 ```
 shooter.pwn.seccon.jp
@@ -159,7 +159,7 @@ develop.shooter.pwn.seccon.jp
 /api/v1/score
 ```
 
-I can get the highest score by sending:
+Now, I can get the highest score by sending:
 
 ```
 POST /api/v1/scores HTTP/1.1
@@ -189,7 +189,7 @@ We can login as admin by sending `' ))) UNION (SElECT 1)#` as password.
 
 What's more, we can do the time base SQL injection.
 
-This part was done by kaibor,my teamate.
+This part was done by [kaibro](https://github.com/w181496), my teamate.
 
 1. leak first db : `shooter_staging`
 
