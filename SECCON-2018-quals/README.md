@@ -101,7 +101,7 @@ The flag is `SECCON{UseTheSpecialDeviceFile}`
 
 Decompress the `.apk`, the `C#` script of game is located at `assets/bin/Data/Managed/Assembly-CSharp.dll`.
 
-[flag](/block.png)
+![flag](./block.png)
 
 # tctkToy
 
